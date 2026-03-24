@@ -1,37 +1,4 @@
-/* Copia dello stile dal ESP32-S3 */
-body {
-    margin:0;
-    font-family:'Segoe UI',sans-serif;
-    height:100vh;
-    background:#1e1e1e;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    padding-top:30px;
-}
-
-.card {
-    background:rgba(0,0,0,0.6);
-    border-radius:15px;
-    padding:25px;
-    width:350px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.8);
-}
-
-h1{ font-size:1.6em; margin-bottom:15px; }
-.status{ margin:12px 0; font-size:18px; }
-button{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    font-size:16px;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-}
-.on{ background:#00e676; color:#003d1a; }
-.off{ background:#ff5252; color:#3b0000; }
-input{ width:100px; padding:10px; margin:8px 4px; border-radius:8px; border:none; }
-select{ padding:8px; margin:8px 0; border-radius:8px; width:120px; }
+body { font-family: Arial, sans-serif; background:#222; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+.container { background: rgba(0,0,0,0.7); padding:20px; border-radius:15px; text-align:center; width:300px; }
+button { width:80px; padding:10px; margin:5px; border:none; border-radius:8px; cursor:pointer; }
+button:hover { opacity:0.8; }
