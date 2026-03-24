@@ -1,9 +1,52 @@
-body {margin:0;font-family:'Segoe UI',sans-serif;height:100vh;background:#111;color:white;display:flex;justify-content:center;align-items:center;}
-.card {background:rgba(0,0,0,0.6);border-radius:15px;padding:25px;width:330px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.8);}
-h1{font-size:1.6em;}
-.status{margin:12px 0;font-size:18px;}
-button{width:100%;padding:12px;margin:8px 0;font-size:16px;border:none;border-radius:25px;cursor:pointer;}
-.on{background:#00e676;color:#003d1a;}
-.off{background:#ff5252;color:#3b0000;}
-input{width:100px;padding:10px;margin:8px 4px;border-radius:8px;border:none;}
-select{padding:8px;margin:8px 0;border-radius:8px;width:120px;}
+/* Stile base per la dashboard del cancello */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #1e1e1e;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#status {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #00e676;
+    color: #003d1a;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+input[type="time"] {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+div {
+    margin-bottom: 15px;
+}
