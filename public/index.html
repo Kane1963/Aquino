@@ -3,40 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Cancello ESP32-S3</title>
+<title>Controllo Cancello - Aquino</title>
 <link rel="stylesheet" href="style.css">
-<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<div class="container">
-  <h1>Controllo Cancello ESP32-S3</h1>
-  <div id="status">Stato: --</div>
-  <div>
-    <button onclick="sendCmd('apri')">APRI</button>
-    <button onclick="sendCmd('chiudi')">CHIUDI</button>
-    <button onclick="sendCmd('auto:on')">AUTO ON</button>
-    <button onclick="sendCmd('auto:off')">AUTO OFF</button>
-  </div>
-  <div>
-    <p>Apertura: <span id="openTime">--:--</span></p>
-    <p>Chiusura: <span id="closeTime">--:--</span></p>
-    <p>Modalità: <span id="mode">--</span></p>
-  </div>
+<div class="card">
+<h1>Cancello di Aquino</h1>
+<div class="status" id="status">Stato: --</div>
+<div class="info">Firmware: <span id="fwVersion">V1.4.0</span></div>
+<div class="info">MQTT Server: <span id="mqttServer">--</span></div>
+<div class="info">MQTT Porta: <span id="mqttPort">--</span></div>
+<div class="info">MQTT Stato: <span id="mqttStatus">--</span></div>
+
+<div class="buttons">
+  <button id="toggleOpen" class="on">APRI</button>
+  <button id="toggleClose" class="off">CHIUDI</button>
 </div>
 
-<script>
-const socket = io();
+<hr>
+<label>Modalità:</label>
+<select id="modeSelect">
+  <option value="auto">Automatica</option>
+  <option value="manual">Manuale</option>
+</select>
 
-socket.on("statusUpdate", data => {
-  document.getElementById("status").innerText = "Stato: " + (data.led ? "APERTO" : "CHIUSO");
-  document.getElementById("mode").innerText = data.autoMode ? "AUTOMATICA" : "MANUALE";
-  document.getElementById("openTime").innerText = `${String(data.openHour).padStart(2,'0')}:${String(data.openMinute).padStart(2,'0')}`;
-  document.getElementById("closeTime").innerText = `${String(data.closeHour).padStart(2,'0')}:${String(data.closeMinute).padStart(2,'0')}`;
-});
+<hr>
+<div class="schedule">
+  <div>
+    <label for="openTime">Apertura:</label>
+    <input type="time" id="openTime">
+  </div>
+  <div>
+    <label for="closeTime">Chiusura:</label>
+    <input type="time" id="closeTime">
+  </div>
+  <button id="saveSchedule">Salva Orari</button>
+</div>
+</div>
 
-function sendCmd(cmd){
-  socket.emit("command", cmd);
-}
-</script>
+<script src="script.js"></script>
 </body>
 </html>
