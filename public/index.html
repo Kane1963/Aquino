@@ -3,42 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cancello Aquino</title>
+<title>Dashboard Cancello</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="card">
-<h1>Cancello Aquino</h1>
-<div class="status" id="status">Stato: --</div>
+<h1>Cancello ESP32-S3</h1>
+<div id="status"></div>
 
-<div style="margin:12px 0;text-align:center;">
-  <button class="on" onclick="toggle(true)">APRI</button>
-  <button class="off" onclick="toggle(false)">CHIUDI</button>
+<div>
+  <button onclick="sendCmd('apri')">APRI</button>
+  <button onclick="sendCmd('chiudi')">CHIUDI</button>
+  <button onclick="sendCmd('auto')">AUTO</button>
+  <button onclick="sendCmd('manual')">MANUALE</button>
 </div>
 
-<hr>
-<label>Modalità:</label>
-<select id="modeSelect" onchange="setMode()">
-  <option value="auto">Automatica</option>
-  <option value="manual">Manuale</option>
-</select>
-
-<hr>
-<div style="margin:12px 0;text-align:center;">
-  <div style="margin-bottom:8px;">
-    <label for="openTime">Apertura:</label>
-    <input type="time" id="openTime" placeholder="HH:MM">
-  </div>
-  <div style="margin-bottom:8px;">
-    <label for="closeTime">Chiusura:</label>
-    <input type="time" id="closeTime" placeholder="HH:MM">
-  </div>
-  <div style="margin-top:12px;">
-    <button onclick="setSchedule()">Salva Orari</button>
-  </div>
+<div>
+  <label>Apertura: <input type="time" id="openTime"></label>
+  <label>Chiusura: <input type="time" id="closeTime"></label>
+  <button onclick="updateSchedule()">Salva Orari</button>
 </div>
 
-</div>
+<script src="/socket.io/socket.io.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
