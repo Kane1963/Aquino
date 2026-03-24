@@ -16,13 +16,16 @@ function updateStatus(){
 function toggle(state){
   fetch("/toggle",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({state: state?"on":"off"})}).then(updateStatus);
 }
+
 function setSchedule(){
   const open=document.getElementById("openTime").value;
   const close=document.getElementById("closeTime").value;
   fetch("/schedule",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({open,close})}).then(()=>alert("Orari aggiornati"));
 }
+
 function setMode(){
   const mode=document.getElementById("modeSelect").value;
   fetch("/mode",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({set:mode})}).then(()=>alert("Modalità aggiornata"));
 }
+
 setInterval(updateStatus,1000); updateStatus();
