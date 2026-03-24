@@ -3,24 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Cancello</title>
+<title>Controllo Cancello - Aquino</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Cancello ESP32-S3</h1>
-<div id="status"></div>
+<div class="card">
+<h1>Cancello di Aquino</h1>
+<div class="status" id="status">Stato: --</div>
+<div style="margin-bottom:8px;font-size:14px;color:#ccc;">Firmware: <span id="fwVersion">--</span></div>
+<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Server: <span id="mqttServer">--</span></div>
+<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Porta: <span id="mqttPort">--</span></div>
+<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Stato: <span id="mqttStatus">--</span></div>
 
-<div>
-  <button onclick="sendCmd('apri')">APRI</button>
-  <button onclick="sendCmd('chiudi')">CHIUDI</button>
+<div style="margin:12px 0;text-align:center;">
+  <button id="toggleOpen" onclick="sendCmd('apri')" class="on">APRI</button>
+  <button id="toggleClose" onclick="sendCmd('chiudi')" class="off">CHIUDI</button>
   <button onclick="sendCmd('auto')">AUTO</button>
   <button onclick="sendCmd('manual')">MANUALE</button>
 </div>
 
-<div>
-  <label>Apertura: <input type="time" id="openTime"></label>
-  <label>Chiusura: <input type="time" id="closeTime"></label>
-  <button onclick="updateSchedule()">Salva Orari</button>
+<hr>
+<div style="margin:12px 0;text-align:center;">
+  <div style="margin-bottom:8px;">
+    <label for="openTime">Apertura:</label>
+    <input type="time" id="openTime">
+  </div>
+  <div style="margin-bottom:8px;">
+    <label for="closeTime">Chiusura:</label>
+    <input type="time" id="closeTime">
+  </div>
+  <div style="margin-top:12px;">
+    <button onclick="updateSchedule()">Salva Orari</button>
+  </div>
+</div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
