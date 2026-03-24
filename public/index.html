@@ -3,42 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controllo Cancello - Aquino</title>
+<title>Dashboard Cancello ESP32-S3</title>
 <link rel="stylesheet" href="style.css">
+<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<div class="card">
-<h1>Cancello di Aquino</h1>
-<div class="status" id="status">Stato: --</div>
-<div style="margin-bottom:8px;font-size:14px;color:#ccc;">Firmware: <span id="fwVersion">--</span></div>
-<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Server: <span id="mqttServer">--</span></div>
-<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Porta: <span id="mqttPort">--</span></div>
-<div style="margin-bottom:8px;font-size:14px;color:#ccc;">MQTT Stato: <span id="mqttStatus">--</span></div>
-
-<div style="margin:12px 0;text-align:center;">
-  <button id="toggleOpen" onclick="sendCmd('apri')" class="on">APRI</button>
-  <button id="toggleClose" onclick="sendCmd('chiudi')" class="off">CHIUDI</button>
-  <button onclick="sendCmd('auto')">AUTO</button>
-  <button onclick="sendCmd('manual')">MANUALE</button>
-</div>
-
-<hr>
-<div style="margin:12px 0;text-align:center;">
-  <div style="margin-bottom:8px;">
-    <label for="openTime">Apertura:</label>
-    <input type="time" id="openTime">
+<div class="container">
+  <h1>Controllo Cancello ESP32-S3</h1>
+  <div id="status">Stato: --</div>
+  <div>
+    <button onclick="sendCmd('apri')">APRI</button>
+    <button onclick="sendCmd('chiudi')">CHIUDI</button>
+    <button onclick="sendCmd('auto:on')">AUTO ON</button>
+    <button onclick="sendCmd('auto:off')">AUTO OFF</button>
   </div>
-  <div style="margin-bottom:8px;">
-    <label for="closeTime">Chiusura:</label>
-    <input type="time" id="closeTime">
-  </div>
-  <div style="margin-top:12px;">
-    <button onclick="updateSchedule()">Salva Orari</button>
+  <div>
+    <p>Apertura: <span id="openTime">--:--</span></p>
+    <p>Chiusura: <span id="closeTime">--:--</span></p>
+    <p>Modalità: <span id="mode">--</span></p>
   </div>
 </div>
-</div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="script.js"></script>
+<script>
+const socket = io();
+
+socket.on("statusUpdate", data => {
+  document.getElementById("status").innerText = "Stato: " + (data.led ? "APERTO" : "CHIUSO");
+  document.getElementById("mode").innerText = data.autoMode ? "AUTOMATICA" : "MANUALE";
+  document.getElementById("openTime").innerText = `${String(data.openHour).padStart(2,'0')}:${String(data.openMinute).padStart(2,'0')}`;
+  document.getElementById("closeTime").innerText = `${String(data.closeHour).padStart(2,'0')}:${String(data.closeMinute).padStart(2,'0')}`;
+});
+
+function sendCmd(cmd){
+  socket.emit("command", cmd);
+}
+</script>
 </body>
 </html>
