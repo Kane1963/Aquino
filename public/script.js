@@ -1,27 +1,45 @@
-const socket = io();
+const statusEl = document.getElementById("status");
+const modeSelect = document.getElementById("modeSelect");
+const openTime = document.getElementById("openTime");
+const closeTime = document.getElementById("closeTime");
+const saveBtn = document.getElementById("saveSchedule");
+const toggleOpen = document.getElementById("toggleOpen");
+const toggleClose = document.getElementById("toggleClose");
 
-// Aggiorna la UI con lo stato ricevuto dal server
-socket.on("status", (data) => {
-    document.getElementById("status").innerHTML = "Stato: <b>" + (data.led ? "APERTO" : "CHIUSO") + "</b>";
-    document.getElementById("modeSelect")?.value = data.autoMode ? "auto" : "manual";
-    document.getElementById("openTime").value = String(data.openHour).padStart(2,'0') + ':' + String(data.openMinute).padStart(2,'0');
-    document.getElementById("closeTime").value = String(data.closeHour).padStart(2,'0') + ':' + String(data.closeMinute).padStart(2,'0');
+let client;
 
-    document.getElementById("fwVersion").innerText = data.firmware || "--";
-    document.getElementById("mqttServer").innerText = data.mqttServer || "--";
-    document.getElementById("mqttPort").innerText = data.mqttPort || "--";
-    document.getElementById("mqttStatus").innerText = data.mqttStatus ? "Connesso" : "Disconnesso";
-});
+// Connessione MQTT
+function connectMQTT(){
+  client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
+  client.on('connect', () => {
+    console.log("MQTT Connesso");
+    document.getElementById("mqttStatus").innerText = "Connesso";
+    client.subscribe('cancello/aquino/status');
+  });
 
-// Invia comandi al server (che poi pubblica su MQTT)
-function sendCmd(cmd){
-    socket.emit("command", cmd);
+  client.on('message', (topic,message) => {
+    const msg = message.toString();
+    const data = JSON.parse(msg);
+    statusEl.innerHTML = "Stato: <b>"+(data.led?"APERTO":"CHIUSO")+"</b>";
+    modeSelect.value = data.autoMode?"auto":"manual";
+    openTime.value = String(data.openHour).padStart(2,'0')+":"+String(data.openMinute).padStart(2,'0');
+    closeTime.value = String(data.closeHour).padStart(2,'0')+":"+String(data.closeMinute).padStart(2,'0');
+  });
 }
 
-// Aggiorna gli orari e invia al server
-function updateSchedule(){
-    const [oh, om] = document.getElementById("openTime").value.split(":").map(Number);
-    const [ch, cm] = document.getElementById("closeTime").value.split(":").map(Number);
-    socket.emit("updateSchedule", {openHour: oh, openMinute: om, closeHour: ch, closeMinute: cm});
-    alert("Orari inviati al cancello!");
+// Pulsanti manuale
+toggleOpen.onclick = ()=>{ client.publish('cancello/aquino/cmd','apri'); }
+toggleClose.onclick = ()=>{ client.publish('cancello/aquino/cmd','chiudi'); }
+
+// Modalità
+modeSelect.onchange = ()=>{ client.publish('cancello/aquino/cmd','auto:'+(modeSelect.value=="auto"?"on":"off")); }
+
+// Salva orari
+saveBtn.onclick = ()=>{
+  const openVal = openTime.value;
+  const closeVal = closeTime.value;
+  client.publish('cancello/aquino/cmd','CF:'+openVal+"-"+closeVal);
+  alert("Orari inviati");
 }
+
+connectMQTT();
