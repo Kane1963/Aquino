@@ -8,15 +8,17 @@ const PORT = process.env.PORT || 3000;
 // Serve la cartella public
 app.use(express.static(path.join(__dirname, "public")));
 
-// MQTT CLOUD
-const client = mqtt.connect("mqtt://broker.hivemq.com:8883");
+// MQTT TLS
+const MQTT_SERVER = "mqtts://broker.hivemq.com:8883";
 const MQTT_TOPIC_CMD = "aquino/gate/control";
 const MQTT_TOPIC_STATUS = "aquino/gate/status";
+
+const client = mqtt.connect(MQTT_SERVER);
 
 let gateState = false;
 
 client.on("connect", () => {
-  console.log("MQTT connesso");
+  console.log("MQTT connesso su TLS 8883");
   client.subscribe(MQTT_TOPIC_STATUS);
 });
 
@@ -49,4 +51,4 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-app.listen(PORT, () => console.log(`Server attivo su porta ${PORT}`));
+app.listen(PORT, () => console.log(`Server attivo su porta ${PORT}`));ttivo su porta ${PORT}`));
