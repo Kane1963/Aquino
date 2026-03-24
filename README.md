@@ -1,22 +1,20 @@
-# Cruscotto Web Cancello - Aquino
+# Cancello Aquino - ESP32 + Web MQTT
 
-Questo progetto permette di controllare un cancello tramite **ESP32-S3** collegato via **MQTT TLS**.  
-Include un **cruscotto web** per visualizzare lo stato del cancello, modificare modalità (auto/manuale) e impostare gli orari di apertura/chiusura.
+Cruscotto web per controllare cancello ESP32-S3 via MQTT TLS 8883.
 
----
+## Funzionalità
+- Toggle cancello manuale / automatico
+- Gestione orari apertura/chiusura
+- Dashboard web in tempo reale
+- Serial monitor con dashboard
+- LittleFS per configurazioni
+- Watchdog ESP32-S3
 
-## **Funzionalità**
+## Setup
+- Clona repo
+- Web: `cd Web && npm install && npm start`
+- ESP32: carica sketch `ESP32/sketch_mar24b.ino` tramite Arduino IDE
+- Configura WiFi e MQTT TLS nel firmware
 
-- Controllo cancello tramite relè collegato all'ESP32-S3  
-- Modalità automatica o manuale  
-- Impostazione orari apertura/chiusura  
-- **Dashboard in tempo reale** via Web  
-- MQTT TLS (porta 8883) per comunicazione sicura  
-- LittleFS per salvataggio configurazioni e sfondo (ESP32)  
-- ISR pulsante manuale  
-- Watchdog per sicurezza  
-- Serial Monitor con **dashboard aggiornata ogni secondo**  
-
----
-
-## **Struttura del progetto**
+## Deploy Web
+- Render: Build `npm install`, Start `npm start`, Runtime Node 18+
