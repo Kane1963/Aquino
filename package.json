@@ -1,16 +1,19 @@
 {
-  "name": "esp32-cancello-dashboard",
+  "name": "cancello-dashboard",
   "version": "1.0.0",
-  "description": "Dashboard MQTT per controllare il cancello ESP32-S3",
+  "description": "Dashboard MQTT per ESP32-S3 Cancello",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mqtt": "^5.2.0",
+    "mqtt": "^4.3.7",
     "socket.io": "^4.7.2"
   },
-  "author": "Tuonome",
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Kane",
   "license": "MIT"
 }
