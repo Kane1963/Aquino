@@ -8,21 +8,39 @@ const PORT = process.env.PORT || 3000;
 // Serve la cartella public
 app.use(express.static(path.join(__dirname, "public")));
 
-// MQTT (semplice esempio)
-const client = mqtt.connect("mqtt://broker.hivemq.com:1883");
+// MQTT CLOUD
+const client = mqtt.connect("mqtt://broker.hivemq.com:8883");
+const MQTT_TOPIC_CMD = "aquino/gate/control";
+const MQTT_TOPIC_STATUS = "aquino/gate/status";
+
 let gateState = false;
 
 client.on("connect", () => {
   console.log("MQTT connesso");
+  client.subscribe(MQTT_TOPIC_STATUS);
 });
 
+client.on("message", (topic, message) => {
+  if (topic === MQTT_TOPIC_STATUS) {
+    gateState = message.toString() === "OPEN";
+  }
+});
+
+// API stato
 app.get("/status", (req, res) => {
   res.json({ led: gateState, mqtt: client.connected });
 });
 
+// API toggle cancello
 app.get("/toggle", (req, res) => {
   const state = req.query.state;
-  gateState = state === "on";
+  if (state === "on") {
+    client.publish(MQTT_TOPIC_CMD, "OPEN");
+    gateState = true;
+  } else if (state === "off") {
+    client.publish(MQTT_TOPIC_CMD, "CLOSE");
+    gateState = false;
+  }
   res.send("OK");
 });
 
