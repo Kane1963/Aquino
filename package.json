@@ -1,7 +1,7 @@
 {
   "name": "aquino-cancello",
   "version": "1.0.0",
-  "description": "Gate MQTT Web",
+  "description": "Controllo cancello via MQTT TLS/SSL",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
